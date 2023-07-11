@@ -60,6 +60,23 @@ app.post("/user", async (req, response) => {
   response.status(500).send();
 });
 
+app.post("/auth", async (req, response) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  if (isEmpty(username) || isEmpty(password)) {
+    response
+      .status(400)
+      .send(`username: '${username}' or password: '${password}' is empty.`);
+  }
+  AuthUtils.authorizer(username, password, (_, res) => {
+    if (res) {
+      response.send();
+    } else {
+      response.status(403).send();
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
