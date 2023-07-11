@@ -2,15 +2,9 @@ const express = require("express");
 const basicAuth = require("express-basic-auth");
 
 const { isEmpty } = require("./utils.js");
-const AuthUtils = require("./auth.js");
-const UserUtils = require("./user.js");
 
 const app = express();
 const port = 8080;
-const basic_auth = basicAuth({
-  authorizer: AuthUtils.authorizer,
-  authorizeAsync: true,
-});
 
 app.use(express.urlencoded()); // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.json()); // Parse JSON bodies (as sent by API clients)
