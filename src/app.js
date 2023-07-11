@@ -1,62 +1,103 @@
 const express = require("express");
-const basicAuth = require("express-basic-auth");
 
-const { isEmpty } = require("./utils.js");
+const UserUtils = require("./user.js");
+const LottUtils = require("./lottery.js");
+const { isEmpty, makeSend } = require("./utils.js");
 
 const app = express();
 const port = 8080;
+
+const WALLET_LENGTH = 42;
 
 app.use(express.urlencoded()); // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.json()); // Parse JSON bodies (as sent by API clients)
 
 app.get("/user/:address", async (request, response) => {
   const address = request.params.address;
-  response.send(address);
+  const user = await UserUtils.queryUserByAddress(address);
+  if (user != null) {
+    response.send(makeSend(user.id));
+  } else {
+    response.sendStatus(404);
+  }
 });
 
 app.post("/user/:address", async (request, response) => {
   const address = request.params.address;
-  response.send(address);
+  if(address.length != WALLET_LENGTH){
+    response.status(400).send("Invalid wallet");
+    return;
+  }
+
+  const user = await UserUtils.createUserIfNotExists(address);
+  if (user != null) {
+    response.send(makeSend(user.id));
+  } else {
+    response.sendStatus(500);
+  }
 });
 
 app.get("/lotteries", async (request, response) => {
-  const lotteries = [];
-  response.send(lotteries);
+  const lotteries = await LottUtils.queryAllLottery();
+  response.send(makeSend(lotteries));
 });
 
 app.get("/lottery/:lid", async (request, response) => {
   const lid = request.params.lid;
-  response.send(lid);
+  const lottery = await LottUtils.queryLotteryByID(lid);
+  response.send(makeSend(lottery));
 });
 
 app.post("/lottery", async (request, response) => {
-  response.send("create lottery");
+  const { title, description, startTime, endTime, bannerURL } = request.body;
+  if (isEmpty(title)) {
+    response.status(400).send(makeSend("Empty title"));
+    return;
+  }
+  const lottery = await LottUtils.createLottery(
+    title,
+    description,
+    startTime,
+    endTime,
+    bannerURL
+  );
+  response.send(makeSend(lottery.id));
 });
 
 app.get("/lottery/:lid/:option(prizes|missions)", async (request, response) => {
   const lid = request.params.lid;
   const option = request.params.option;
-  response.send(option);
+  const lottery = await LottUtils.queryLotteryByID(lid);
+  response.send(makeSend(lottery[option]));
 });
 
-app.post("/lottery/:lid/:option(prizes|missions)", async (request, response) => {
-  const lid = request.params.lid;
-  const option = request.params.option;
-  response.send(option);
-});
+app.post(
+  "/lottery/:lid/:option(prizes|missions)",
+  async (request, response) => {
+    const lid = request.params.lid;
+    const option = request.params.option;
+    const value = request.body.value;
+    const lottery = await LottUtils.queryLotteryByID(lid);
+
+    if (lottery == null) {
+      response.sendStatus(404);
+    } else {
+      LottUtils.updateField(lottery, option, value);
+      response.sendStatus(200);
+    }
+  }
+);
 
 app.get("/lottery/:lid/close", async (request, response) => {
   const lid = request.params.lid;
-  response.send(lid);
+  response.send(makeSend(lid));
 });
 
 app.get("/lottery/:lid/redeem/:address", async (request, response) => {
   const lid = request.params.lid;
   const address = request.params.address;
-  response.send(lid);
+  response.send(makeSend(lid));
 });
-
-
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
