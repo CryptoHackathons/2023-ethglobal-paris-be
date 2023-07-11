@@ -72,7 +72,7 @@ app.post("/auth", async (req, response) => {
     if (res) {
       response.send();
     } else {
-      response.status(403).send();
+      response.status(401).send();
     }
   });
 });
