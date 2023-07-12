@@ -1,5 +1,5 @@
 const express = require("express");
-
+const { ethers } = require('ethers');
 const UserUtils = require("./user.js");
 const LottUtils = require("./lottery.js");
 const { isEmpty, makeSend } = require("./utils.js");
@@ -100,5 +100,30 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
   const address = request.params.address;
   response.send(makeSend(lid));
 });
+
+
+// set time
+function scheduleTask(time, task) {
+  const currentTime = new Date().getTime();
+  const targetTime = new Date(time).getTime();
+
+  const delay = targetTime - currentTime;
+
+  if (delay == 0) {
+   
+    task();
+  } else {
+    
+    setTimeout(task, delay);
+  }
+}
+function closeLottery() {
+  const lotteryID = 1; // assign target lottery for demo
+  
+}
+
+const targetTimeTW = '2023-07-12T19:27:00+08:00'; // assign time for demo
+const targetTime = new Date(targetTimeTW);
+scheduleTask(targetTime, closeLottery);
 
 module.exports = app;
