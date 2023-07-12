@@ -1,4 +1,5 @@
 const express = require("express");
+var cors = require('cors');
 
 const UserUtils = require("./user.js");
 const LottUtils = require("./lottery.js");
@@ -10,6 +11,7 @@ const WALLET_LENGTH = 42;
 
 app.use(express.urlencoded()); // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.json()); // Parse JSON bodies (as sent by API clients)
+app.use(cors());
 
 app.get("/user/:address", async (request, response) => {
   const address = request.params.address;
