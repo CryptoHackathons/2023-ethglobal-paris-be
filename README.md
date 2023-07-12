@@ -1,7 +1,7 @@
 # 2023-ethglobal-paris-be
 
 ## Run
-`$ npm start`
+`$ npm install && npm start`
 
 ### User Endpoints
 - `/user/:address`
