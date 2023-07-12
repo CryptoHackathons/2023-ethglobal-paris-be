@@ -23,11 +23,10 @@ app.get("/user/:address", async (request, response) => {
 
 app.post("/user/:address", async (request, response) => {
   const address = request.params.address;
-  if(address.length != WALLET_LENGTH){
-    response.status(400).send("Invalid wallet");
-    return;
-  }
-
+  // if (address.length != WALLET_LENGTH) {
+  //   response.status(400).send("Invalid wallet");
+  //   return;
+  // }
   const user = await UserUtils.createUserIfNotExists(address);
   if (user != null) {
     response.send(makeSend(user.id));
@@ -44,7 +43,11 @@ app.get("/lotteries", async (request, response) => {
 app.get("/lottery/:lid", async (request, response) => {
   const lid = request.params.lid;
   const lottery = await LottUtils.queryLotteryByID(lid);
-  response.send(makeSend(lottery));
+  if (lottery != null) {
+    response.send(makeSend(lottery));
+  } else {
+    response.sendStatus(404);
+  }
 });
 
 app.post("/lottery", async (request, response) => {
