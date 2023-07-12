@@ -1,17 +1,26 @@
 {
   "name": "paint",
-  "version": "1.0.0",
-  "description": "Backend that does the draw.",
+  "version": "0.1.1",
+  "description": "Backend that does the drawing",
   "main": "app.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --testTimeout=100000",
     "flow": "flow",
     "flow:check": "flow check ./src/",
-    "start": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "pretest": "cross-env NODE_ENV=test npm run migrate:reset",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
-    "migrate": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    "migrate": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "build": ""
   },
+  "directories": {
+    "serve": "src"
+  },
+  "files": [
+    "src",
+    "app.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CryptoHackathons/2023-ethglobal-paris-be.git"
@@ -28,7 +37,8 @@
     "express": "^4.18.2",
     "express-basic-auth": "^1.2.1",
     "sequelize": "^6.32.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
