@@ -1,4 +1,4 @@
-const { Lottery } = require("./models");
+const { Lottery } = require("../models/models");
 
 async function queryLotteryByID(id) {
   const ret = await Lottery.findAll({
