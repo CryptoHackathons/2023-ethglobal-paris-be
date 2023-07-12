@@ -80,13 +80,13 @@ app.post(
   async (request, response) => {
     const lid = request.params.lid;
     const option = request.params.option;
-    const value = request.body.value;
+    const data = request.body.data;
     const lottery = await LottUtils.queryLotteryByID(lid);
 
     if (lottery == null) {
       response.sendStatus(404);
     } else {
-      LottUtils.updateField(lottery, option, value);
+      LottUtils.updateField(lottery, option, data);
       response.sendStatus(200);
     }
   }

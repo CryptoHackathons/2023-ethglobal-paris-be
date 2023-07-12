@@ -44,7 +44,7 @@
     - 200: {title, description, startTime, endTime, bannerURL}
     - 404: Lottery id not found
     - E.g. `$ curl http://localhost:8080/lottery/1/prizes`
-    - E.g. `$ curl http://localhost:8080/lottery/1/prizes -d "value={[%22id%22%3A%22%22%2C%22title%3A%22gold%22%2C%22description%22%3A%22something+good%22]}"`
+    - E.g. `$ curl http://localhost:8080/lottery/1/prizes -d "data={[%22id%22%3A%22%22%2C%22title%3A%22gold%22%2C%22description%22%3A%22something+good%22]}"`
 
 - [WIP] `/lottery/:lottery_id/close`
   - GET: trigger `closeLotterytAndCallChainlinkCoordinator()`
