@@ -117,6 +117,7 @@ curl https://ethp.onrender.com/lottery/1/prizes -d "data={[%22id%22%3A%22%22%2C%
 {
   - id,
   - address,
+
 }
 
 ### lottery
@@ -129,4 +130,5 @@ curl https://ethp.onrender.com/lottery/1/prizes -d "data={[%22id%22%3A%22%22%2C%
   - proof,
   - prizes: json,
   - missions: json,
+  
 }
