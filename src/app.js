@@ -6,7 +6,7 @@ const LottUtils = require("./lottery.js");
 const { isEmpty, makeSend } = require("./utils.js");
 const fs = require('fs')
 const {buildMimc7,buildBabyjub} = require('circomlibjs')
-const mimcMerkle = require('./test/MiMCMerkle')
+const mimcMerkle = require('./MiMCMerkle')
 const crypto = require('crypto');
 
 const app = express();
@@ -107,37 +107,5 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
 });
 
 
-// set time
-function scheduleTask(time, task) {
-  const currentTime = new Date().getTime();
-  const targetTime = new Date(time).getTime();
-
-  const delay = targetTime - currentTime;
-
-  if (delay == 0) {
-   
-    task();
-  } else {
-    
-    setTimeout(task, delay);
-  }
-}
-
-function executeBash(){
-  const bashScript = './compileZK.sh';
-  exec(`bash ${bashScript}`, (error, stdout) => {
-    if (error) {
-      console.error('error:', error);
-      return;
-    }
-
-    console.log('Success Compile!');
-    console.log('Output:', stdout);
-  })
-}
-
-const targetTimeTW = '2023-07-12T19:27:00+08:00'; // assign time for demo
-const targetTime = new Date(targetTimeTW);
-scheduleTask(targetTime, closeLottery);
 
 module.exports = app;
