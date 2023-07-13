@@ -77,11 +77,11 @@ curl https://ethp.onrender.com/lottery -d "title=First%20Campaign&bannerURL=http
   - GET: get lottery info
     - 200: {title, description, startTime, endTime, bannerURL}
     - 404: Lottery id not found
+```sh
+curl http://localhost:8080/lottery/1
 ```
-$ curl http://localhost:8080/lottery/1
-```
-```
-$ curl https://ethp.onrender.com/lottery/1
+```sh
+curl https://ethp.onrender.com/lottery/1
 ```
 
 - `/lottery/:lottery_id/[prizes|missions]`
