@@ -4,13 +4,13 @@
 - `main` branch is currently served at https://ethp.onrender.com/.
 
 ## Run
-```
-$ npm install && npm run migrate && npm start
+```sh
+npm install && npm run migrate && npm start
 ```
 
 ## Test
-```
-$ npm test
+```sh
+npm test
 ```
 
 ## User Endpoints
