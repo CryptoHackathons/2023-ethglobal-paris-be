@@ -54,7 +54,7 @@ curl https://ethp.onrender.com/lotteries
     ?endTime,
     ?bannerURL,
   }
-    - 200: {lottery_id}
+    - 200: lottery_id
     - 400: Empty ttitle
 ```sh
 curl http://localhost:8080/lottery -d "title=First%20Campaign&bannerURL=https%3A%2F%2Ftinyurl.com%2F3jy9ww3w"
