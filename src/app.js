@@ -157,6 +157,4 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
   response.send(makeSend(obj));
 });
 
-
-
 module.exports = app;

@@ -137,6 +137,8 @@ async function closeLottery() {
 
 //function 
 
-scheduleTask(targetTime, closeLottery);
+if(require.main === module){
+  scheduleTask(targetTime, closeLottery);
+}
 
 module.exports = { closeLottery };
