@@ -1,7 +1,7 @@
 # 2023-ethglobal-paris-be
 
 ## Hosting
-- `main` branch is currently served at `[https://ethp.onrender.com/]`.
+- `main` branch is currently served at [https://ethp.onrender.com/].
 
 ## Run
 `$ npm install && npm run migrate && npm start`
