@@ -1,8 +1,13 @@
 const express = require("express");
 const { ethers } = require('ethers');
+const { exec } = require('child_process');
 const UserUtils = require("./user.js");
 const LottUtils = require("./lottery.js");
 const { isEmpty, makeSend } = require("./utils.js");
+const fs = require('fs')
+const {buildMimc7,buildBabyjub} = require('circomlibjs')
+const mimcMerkle = require('./test/MiMCMerkle')
+const crypto = require('crypto');
 
 const app = express();
 
@@ -117,9 +122,18 @@ function scheduleTask(time, task) {
     setTimeout(task, delay);
   }
 }
-function closeLottery() {
-  const lotteryID = 1; // assign target lottery for demo
-  
+
+function executeBash(){
+  const bashScript = './compileZK.sh';
+  exec(`bash ${bashScript}`, (error, stdout) => {
+    if (error) {
+      console.error('error:', error);
+      return;
+    }
+
+    console.log('Success Compile!');
+    console.log('Output:', stdout);
+  })
 }
 
 const targetTimeTW = '2023-07-12T19:27:00+08:00'; // assign time for demo
