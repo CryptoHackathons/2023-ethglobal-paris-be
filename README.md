@@ -4,10 +4,10 @@
 - `main` branch is currently served at https://ethp.onrender.com/.
 
 ## Run
-`$ npm install && npm run migrate && npm start`
+```$ npm install && npm run migrate && npm start```
 
 ## Test
-`$ npm test`
+```$ npm test```
 
 ## User Endpoints
 - `/user/:address`
@@ -15,7 +15,9 @@
     - 200: uid
     - 404: not found
     - E.g. 
+
   ```$ curl https://ethp.onrender.com/user/0x71C7656EC7ab88b098defB751B7401B5f6d8976F```
+  
   - POST: create user address and return the assigned user id; return existing user id if address already registered
     - 200: uid
     - E.g. `$ curl https://ethp.onrender.com/user/0x71C7656EC7ab88b098defB751B7401B5f6d8976F -X POST`
