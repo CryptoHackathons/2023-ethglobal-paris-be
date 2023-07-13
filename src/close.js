@@ -138,3 +138,5 @@ async function closeLottery() {
 //function 
 
 scheduleTask(targetTime, closeLottery);
+
+module.exports = { closeLottery };
