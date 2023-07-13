@@ -4,6 +4,7 @@ const ethers = require('ethers');
 const fs = require('fs');
 const {buildMimc7,buildBabyjub} = require('circomlibjs')
 const mimcMerkle = require('./MiMCMerkle')
+const { groth16 } = require("snarkjs");
 const crypto = require('crypto');
 const abi = require('./abi.json');
 const dotenv = require('dotenv');
@@ -14,12 +15,30 @@ function hexToDec(hex) {
     return parseInt(hex, 16);
 }
 
+function unstringifyBigInts(o) {
+  if (typeof o == "string" && /^[0-9]+$/.test(o)) {
+    return BigInt(o);
+  } else if (Array.isArray(o)) {
+    return o.map(unstringifyBigInts);
+  } else if (typeof o == "object") {
+    const res = {};
+    const keys = Object.keys(o);
+    keys.forEach(k => {
+      res[k] = unstringifyBigInts(o[k]);
+    });
+    return res;
+  } else {
+    return o;
+  }
+}
+
 const users = [
     "0x1dB47D1a06Df36f963af1b086B012bb278071372",
     "0x7054D076C898472cbFEB31a6fE72c135c86C6609",
     "0x85EdA6610C66cCd307f230621DdA24Fd3bE20245",
     "0xF16Aa7E201651e7eAd5fDd010a5a14589E220826"
 ] // assign users for demo
+
 const targetTimeTW = '2023-07-12T19:27:00+08:00'; // assign time for demo
 const targetTime = new Date(targetTimeTW);
 
@@ -96,18 +115,24 @@ async function closeLottery() {
     }
 
     fs.writeFileSync("./circuits/input.json",JSON.stringify(inputs),"utf-8")
+    const{proof, publicSignals} = await groth16.fullProve(inputs, "./circuits/check_exist.wasm", "./circuits/circuit.zkey")
+     
+    const calldata = await groth16.exportSolidityCallData(unstringifyBigInts(proof), unstringifyBigInts(publicSignals))
+    const args = JSON.parse("[" + calldata + "]")
+    console.log("write in proof")
+    fs.writeFileSync("./proof.json",JSON.stringify(args),"utf-8")
 
-    const bashScript = './compileZK.sh';
+    // for demo not going to compile
+    // const bashScript = './compileZK.sh';
   
-    exec(`bash ${bashScript}`, (error, stdout) => {
-       if (error) {
-         console.error('error:', error);
-         return;
-       }
-  
-       console.log('Success Compile!');
-       console.log('Output:', stdout);
-    })
+    // exec(`bash ${bashScript}`, (error, stdout) => {
+    //    if (error) {
+    //      console.error('error:', error);
+    //      return;
+    //    }
+    //})
+    console.log('Success Compile!');
+    
 }
 
 //function 
