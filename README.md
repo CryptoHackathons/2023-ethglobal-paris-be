@@ -116,8 +116,9 @@ curl http://localhost:8080/lottery/1/redeem/0x71C7656EC7ab88b098defB751B7401B5f6
 curl https://ethp.onrender.com/lottery/1/redeem/0x71C7656EC7ab88b098defB751B7401B5f6d8976F
 ```
 
-- ~~`/lottery/:lottery_id/close`~~
+- `/lottery/:lottery_id/close`
   - `close` function will be automatically executed at lottery end time.
+    - 200: OK
 
 ## Data models
 ### User
