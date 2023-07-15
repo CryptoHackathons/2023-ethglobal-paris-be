@@ -115,7 +115,7 @@ app.post(
     const data = request.body.data;
     const lottery = await LottUtils.queryLotteryByID(lid);
 
-    if(data.length > 65535){
+    if (data.length > 65535) {
       response.status(400).send("Value too long");
     } else if (lottery == null) {
       response.sendStatus(404);
@@ -147,11 +147,13 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
     return;
   }
   if (!fs.existsSync(PROOF_PATH)) {
+    console.log("Proof file not found");
     response.sendStatus(204);
     return;
   }
   const proof = fs.readFileSync(PROOF_PATH);
   if (isEmpty(proof)) {
+    console.log("Proof is empty");
     response.sendStatus(204);
     return;
   }
