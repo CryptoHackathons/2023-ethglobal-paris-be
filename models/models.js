@@ -1,8 +1,9 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
-const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.json')[env];
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+// const env = process.env.NODE_ENV || 'development';
+// const config = require('../config/config.json')[env];
+const sequelize = new Sequelize("postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a.frankfurt-postgres.render.com/ethp?ssl=true");
+// const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 const User = sequelize.define("User", {
   address: {
