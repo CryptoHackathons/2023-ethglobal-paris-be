@@ -1,6 +1,9 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
-const sequelize = new Sequelize("sqlite:db.sqlite3:");
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config.json')[env];
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
+
 const User = sequelize.define("User", {
   address: {
     type: DataTypes.STRING,
