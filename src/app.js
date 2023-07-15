@@ -115,7 +115,9 @@ app.post(
     const data = request.body.data;
     const lottery = await LottUtils.queryLotteryByID(lid);
 
-    if (lottery == null) {
+    if(data.length > 65535){
+      response.status(400).send("Value too long");
+    } else if (lottery == null) {
       response.sendStatus(404);
     } else {
       LottUtils.updateField(lottery, option, data);
