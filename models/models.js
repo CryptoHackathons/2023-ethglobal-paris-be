@@ -1,9 +1,10 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
+let sequelize;
 if(process.env.NODE_ENV === 'production'){
-  const sequelize = new Sequelize("postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a/ethp");
+  sequelize = new Sequelize("postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a/ethp");
 } else {
-  const sequelize = new Sequelize("postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a.frankfurt-postgres.render.com/ethp?ssl=true");
+  sequelize = new Sequelize("postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a.frankfurt-postgres.render.com/ethp?ssl=true");
 }
 
 const User = sequelize.define("User", {
@@ -27,8 +28,8 @@ const Lottery = sequelize.define("Lottery", {
   endTime: DataTypes.DATE,
   bannerURL: DataTypes.STRING,
   proof: DataTypes.STRING,
-  prizes: DataTypes.STRING,
-  missions: DataTypes.STRING,
+  prizes: DataTypes.STRING(65536),
+  missions: DataTypes.STRING(65536),
 });
 
 if (require.main === module) {
