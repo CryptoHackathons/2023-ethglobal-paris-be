@@ -17,20 +17,24 @@ const User = sequelize.define("User", {
 
 const Lottery = sequelize.define("Lottery", {
   title: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(2048),
     allowNull: false,
   },
-  description: DataTypes.STRING,
+  description: DataTypes.STRING(65536),
   startTime: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
   endTime: DataTypes.DATE,
-  bannerURL: DataTypes.STRING,
+  bannerURL: DataTypes.STRING(2048),
   proof: DataTypes.STRING,
   prizes: DataTypes.STRING(65536),
   missions: DataTypes.STRING(65536),
 });
+
+const UserLotteryRecord = sequelize.define('UserLotteryRecord', {});
+
+User.belongsToMany(Lottery, {through: UserLotteryRecord});
 
 if (require.main === module) {
   (async () => {
