@@ -6,7 +6,7 @@ var cors = require('cors');
 const UserUtils = require("./user.js");
 const LottUtils = require("./lottery.js");
 const CloseUtils = require("./close.js");
-const ProofUtils = require("./proof.js")
+// const ProofUtils = require("./proof.js")
 
 const { isEmpty, makeSend } = require("./utils.js");
 const fs = require('fs')
@@ -117,7 +117,7 @@ app.post(
     const data = request.body.data;
     const lottery = await LottUtils.queryLotteryByID(lid);
 
-    if(data.length > 65535){
+    if (data.length > 65535) {
       response.status(400).send("Value too long");
     } else if (lottery == null) {
       response.sendStatus(404);
@@ -160,6 +160,58 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
   }
   const obj = { lottery_id: lid, user_id: user.id, user_address: address, proof }
   response.send(makeSend(obj));
+});
+
+app.get("/user/:address/lottery/:lid", async (request, response) => {
+  const lid = request.params.lid;
+  const address = request.params.address;
+  const lottery = await LottUtils.queryLotteryByID(lid);
+  if (lottery == null) {
+    response.status(404).send("Lottery Not Found");
+    return;
+  }
+  const user = await UserUtils.queryUserByAddress(address);
+  if (user == null) {
+    response.status(404).send("Address Not Found");
+    return;
+  }
+  const result = await LottUtils.queryUserLotteryRecord(lottery, user);
+  response.send(result != null);
+});
+
+app.post("/user/:address/lottery/:lid", async (request, response) => {
+  const lid = request.params.lid;
+  const address = request.params.address;
+  const lottery = await LottUtils.queryLotteryByID(lid);
+  if (lottery == null) {
+    response.status(404).send("Lottery Not Found");
+    return;
+  }
+  const user = await UserUtils.createUserIfNotExists(address);
+  await LottUtils.registerUserLotteryRecord(lottery, user);
+  response.sendStatus(200);
+});
+
+app.get("/user/:address/lotteries", async (request, response) => {
+  const address = request.params.address;
+  const user = await UserUtils.queryUserByAddress(address);
+  if (user == null) {
+    response.status(404).send("Address Not Found");
+    return;
+  }
+  const lotteries = await LottUtils.queryUserLotteryAllRecordsByUser(user);
+  response.send(lotteries);
+});
+
+app.get("/lottery/:lid/users", async (request, response) => {
+  const lid = request.params.lid;
+  const lottery = await LottUtils.queryLotteryByID(lid);
+  if (lottery == null) {
+    response.status(404).send("Lottery Not Found");
+    return;
+  }
+  const users = await LottUtils.queryUserLotteryAllRecordsByLottery(lottery);
+  response.send(users);
 });
 
 module.exports = app;

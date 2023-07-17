@@ -42,4 +42,4 @@ if (require.main === module) {
   })();
 }
 
-module.exports = { User, Lottery };
+module.exports = { User, Lottery, UserLotteryRecord };

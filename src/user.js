@@ -1,5 +1,12 @@
 const { User } = require("../models/models");
 
+async function queryUserByID(id) {
+  const ret = await User.findAll({
+    where: { id },
+  });
+  return ret.length > 0 ? ret[0] : null;
+}
+
 async function queryUserByAddress(address) {
   const ret = await User.findAll({
     where: { address },
@@ -16,6 +23,7 @@ async function createUserIfNotExists(address) {
 }
 
 module.exports = {
+  queryUserByID,
   queryUserByAddress,
   createUserIfNotExists,
 };
