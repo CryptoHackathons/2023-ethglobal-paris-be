@@ -1,7 +1,7 @@
 # 2023-ethglobal-paris-be
 
 ## Run
-`$ node app.js`
+`$ npm start`
 
 ## Endpoints
 - `/`
@@ -11,21 +11,30 @@
 
 ### User Endpoints
 - `/users`
-  - GET: [auth required] 
+  - [v] GET: [auth required] get the list of users
     - 200: [[username, createTime]]
 
 - `/user`
-  - POST:
-    - fields: {*username, *password, action="create"}
+  - [v] POST: create user or update password
+    - fields: {username, password, ?action="create"}
       - 200: [uid]
       - 400: username or password empty
 
 - `/user/:username`
-  - GET: [auth required]
+  - [v] GET: [auth required] get user data
     - 200: [username, createTime]
 
 - `/auth`
-  - POST:
-    - fileds: {*username, *password}
-    - 403: username or password not matched
+  - [v] POST: authenticatea user credential
+    - fileds: {username, password}
+    - 401: username or password not matched
     - 200: OK
+
+## Data models
+### User
+{
+  id
+  [v] username
+  [v] password
+  [] walletAddress
+}
