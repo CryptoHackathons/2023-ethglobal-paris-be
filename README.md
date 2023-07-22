@@ -35,9 +35,24 @@ curl http://localhost:8080/user/0x71C7656EC7ab88b098defB751B7401B5f6d8976F -X PO
 curl https://ethp.onrender.com/user/0x71C7656EC7ab88b098defB751B7401B5f6d8976F -X POST
 ```
 
+- `/user/:address/lottery/:lottery_id`
+
+  - POST: add user to lottery
+    - 200:OK, user added if address not found
+    - 404: Lottery id not found
+  - GET: check if user is in lottery
+    - 200: {`true`|`false`}
+    - 404: Address or lottery id not found
+   
+- `/user/:address/lotteries`
+  - GET: get list of lotteries that the user joined
+    - 200: [{lotteryId, title, description, startTime, endTime, bannerURL, userCount}]
+    - 404: Address not found
+      
+## Lottery Endpoints
 - `/lotteries`
   - GET: get all lotteries info
-    - 200: [{title, description, startTime, endTime, bannerURL}]
+    - 200: [{title, description, startTime, endTime, bannerURL, userCount}]
 ```sh
 curl http://localhost:8080/lotteries
 ```
@@ -75,7 +90,7 @@ curl https://ethp.onrender.com/lottery -d "title=Skyline%20Film%20%E5%B1%8B%E9%A
       - 200: OK
       - 404: Lottery id not found
   - GET: get lottery info
-    - 200: {title, description, startTime, endTime, bannerURL}
+    - 200: {title, description, startTime, endTime, bannerURL, userCount}
     - 404: Lottery id not found
 ```sh
 curl http://localhost:8080/lottery/1
