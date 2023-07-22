@@ -5,15 +5,17 @@ var cors = require('cors');
 
 const UserUtils = require("./user.js");
 const LottUtils = require("./lottery.js");
+const CloseUtils = require("./close.js");
 const { isEmpty, makeSend } = require("./utils.js");
 const fs = require('fs')
-const {buildMimc7,buildBabyjub} = require('circomlibjs')
+const { buildMimc7, buildBabyjub } = require('circomlibjs')
 const mimcMerkle = require('./MiMCMerkle')
 const crypto = require('crypto');
 
 const app = express();
 
 const WALLET_LENGTH = 42;
+const PROOF_PATH = "./circuits/proof.json";
 
 app.use(express.urlencoded()); // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.json()); // Parse JSON bodies (as sent by API clients)
@@ -63,16 +65,16 @@ app.post("/lottery/:lid", async (request, response) => {
   const lottery = await LottUtils.queryLotteryByID(lid);
   if (lottery != null) {
     const { title, description, startTime, endTime, bannerURL } = request.body;
-    if(!isEmpty(title)){
+    if (!isEmpty(title)) {
       lottery.title = title;
     }
-    if(description != null){
+    if (description != null) {
       lottery.description = description;
     }
-    if(!isEmpty(startTime)){
+    if (!isEmpty(startTime)) {
       lottery.startTime = startTime;
     }
-    if(endTime != null){
+    if (endTime != null) {
       lottery.endTime = endTime;
     }
     await lottery.save();
@@ -124,13 +126,35 @@ app.post(
 
 app.get("/lottery/:lid/close", async (request, response) => {
   const lid = request.params.lid;
+  await CloseUtils.closeLottery();
   response.send(makeSend(lid));
 });
 
 app.get("/lottery/:lid/redeem/:address", async (request, response) => {
   const lid = request.params.lid;
   const address = request.params.address;
-  response.send(makeSend(lid));
+
+  const lottery = await LottUtils.queryLotteryByID(lid);
+  if (lottery == null) {
+    response.status(404).send("Lottery Not Found");
+    return;
+  }
+  const user = await UserUtils.queryUserByAddress(address);
+  if (user == null) {
+    response.status(404).send("Status Not Found");
+    return;
+  }
+  if (!fs.existsSync(PROOF_PATH)) {
+    response.sendStatus(204);
+    return;
+  }
+  const proof = fs.readFileSync(PROOF_PATH);
+  if (isEmpty(proof)) {
+    response.sendStatus(204);
+    return;
+  }
+  const obj = { lottery_id: lid, user_id: user.id, user_address: address, proof }
+  response.send(makeSend(obj));
 });
 
 
