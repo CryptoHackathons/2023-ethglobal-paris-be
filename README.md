@@ -3,7 +3,7 @@
 ## Run
 `$ npm install && npm run migrate && npm start`
 
-### User Endpoints
+## User Endpoints
 - `/user/:address`
   - GET: get user id associated with the address
     - 200: uid
