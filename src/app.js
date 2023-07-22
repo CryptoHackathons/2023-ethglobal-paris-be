@@ -20,7 +20,7 @@ app.get("/user/:address", async (request, response) => {
   response.send(address);
 });
 
-app.post("/user/:address", async (req, response) => {
+app.post("/user/:address", async (request, response) => {
   const address = request.params.address;
   response.send(address);
 });
