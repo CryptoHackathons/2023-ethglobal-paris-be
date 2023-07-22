@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
-const sequelize = new Sequelize("sqlite:sqlite3.db:");
+const sequelize = new Sequelize("sqlite:db.sqlite3:");
 const User = sequelize.define("User", {
   address: {
     type: DataTypes.STRING,
