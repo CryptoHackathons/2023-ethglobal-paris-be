@@ -6,6 +6,8 @@ var cors = require('cors');
 const UserUtils = require("./user.js");
 const LottUtils = require("./lottery.js");
 const CloseUtils = require("./close.js");
+const ProofUtils = require("./proof.js")
+
 const { isEmpty, makeSend } = require("./utils.js");
 const fs = require('fs')
 const { buildMimc7, buildBabyjub } = require('circomlibjs')
@@ -128,7 +130,7 @@ app.post(
 
 app.get("/lottery/:lid/close", async (request, response) => {
   const lid = request.params.lid;
-  await CloseUtils.closeLottery();
+  await CloseUtils.closeLotteryAndGenerateProof();
   response.send(makeSend(lid));
 });
 
@@ -137,6 +139,7 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
   const address = request.params.address;
 
   const lottery = await LottUtils.queryLotteryByID(lid);
+  // const findaddress = await ProofUtils.FindCorrespondProof(address) 
   if (lottery == null) {
     response.status(404).send("Lottery Not Found");
     return;

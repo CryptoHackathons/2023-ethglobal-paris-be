@@ -72,7 +72,7 @@ function executeBash(){
 }
 
 
-async function closeLottery() {
+async function closeLotteryAndGenerateProof() {
     
     // for wallet setting
     const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com/');
@@ -116,7 +116,8 @@ async function closeLottery() {
 
     fs.writeFileSync("./circuits/input.json",JSON.stringify(inputs),"utf-8")
     const{proof, publicSignals} = await groth16.fullProve(inputs, "./circuits/check_exist.wasm", "./circuits/circuit.zkey")
-     
+    
+    // write proof
     const calldata = await groth16.exportSolidityCallData(unstringifyBigInts(proof), unstringifyBigInts(publicSignals))
     const args = JSON.parse("[" + calldata + "]")
     console.log("write in proof")
@@ -138,7 +139,7 @@ async function closeLottery() {
 //function 
 
 if(require.main === module){
-  scheduleTask(targetTime, closeLottery);
+  scheduleTask(targetTime, closeLotteryAndGenerateProof);
 }
 
-module.exports = { closeLottery };
+module.exports = { closeLotteryAndGenerateProof };
