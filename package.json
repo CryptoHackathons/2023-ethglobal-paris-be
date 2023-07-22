@@ -24,6 +24,7 @@
   "homepage": "https://github.com/CryptoHackathons/2023-ethglobal-paris-be#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "ethers": "^6.6.3",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-basic-auth": "^1.2.1",

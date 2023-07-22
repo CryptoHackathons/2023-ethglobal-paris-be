@@ -1,9 +1,15 @@
 const express = require("express");
+const { ethers } = require('ethers');
+const { exec } = require('child_process');
 var cors = require('cors');
 
 const UserUtils = require("./user.js");
 const LottUtils = require("./lottery.js");
 const { isEmpty, makeSend } = require("./utils.js");
+const fs = require('fs')
+const {buildMimc7,buildBabyjub} = require('circomlibjs')
+const mimcMerkle = require('./MiMCMerkle')
+const crypto = require('crypto');
 
 const app = express();
 
@@ -126,5 +132,7 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
   const address = request.params.address;
   response.send(makeSend(lid));
 });
+
+
 
 module.exports = app;
