@@ -46,29 +46,29 @@
     - E.g. `$ curl http://localhost:8080/lottery/1/prizes`
     - E.g. `$ curl http://localhost:8080/lottery/1/prizes -d "value={[%22id%22%3A%22%22%2C%22title%3A%22gold%22%2C%22description%22%3A%22something+good%22]}"`
 
-- `/lottery/:lottery_id/close`
+- [WIP] `/lottery/:lottery_id/close`
   - GET: trigger `closeLotterytAndCallChainlinkCoordinator()`
     - 200: OK
 
-- `/lottery/:lottery_id/redeem/:address`
+- [WIP] `/lottery/:lottery_id/redeem/:address`
   - GET: get user id and proof for lottery
     - 200: {lotter_id, user_id, user_address, proof}
 
 ## Data models
 ### User
 {
-  id
-  address
+  - id,
+  - address,
 }
 
 ### lottery
 {
-  title,
-  description,
-  startTime,
-  endTime,
-  bannerURL
-  proof,
-  prizes: json,
-  missions: json,
+  - title,
+  - description,
+  - startTime,
+  - endTime,
+  - bannerURL
+  - proof,
+  - prizes: json,
+  - missions: json,
 }
