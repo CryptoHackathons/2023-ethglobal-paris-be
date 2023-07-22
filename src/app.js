@@ -52,6 +52,30 @@ app.get("/lottery/:lid", async (request, response) => {
   }
 });
 
+app.post("/lottery/:lid", async (request, response) => {
+  const lid = request.params.lid;
+  const lottery = await LottUtils.queryLotteryByID(lid);
+  if (lottery != null) {
+    const { title, description, startTime, endTime, bannerURL } = request.body;
+    if(!isEmpty(title)){
+      lottery.title = title;
+    }
+    if(description != null){
+      lottery.description = description;
+    }
+    if(!isEmpty(startTime)){
+      lottery.startTime = startTime;
+    }
+    if(endTime != null){
+      lottery.endTime = endTime;
+    }
+    await lottery.save();
+    response.sendStatus(200);;
+  } else {
+    response.sendStatus(404);
+  }
+});
+
 app.post("/lottery", async (request, response) => {
   const { title, description, startTime, endTime, bannerURL } = request.body;
   if (isEmpty(title)) {
@@ -60,10 +84,10 @@ app.post("/lottery", async (request, response) => {
   }
   const lottery = await LottUtils.createLottery(
     title,
-    description,
+    description ?? "",
     startTime,
-    endTime,
-    bannerURL
+    endTime ?? "",
+    bannerURL ?? ""
   );
   response.send(makeSend(lottery.id));
 });
@@ -80,13 +104,13 @@ app.post(
   async (request, response) => {
     const lid = request.params.lid;
     const option = request.params.option;
-    const value = request.body.value;
+    const data = request.body.data;
     const lottery = await LottUtils.queryLotteryByID(lid);
 
     if (lottery == null) {
       response.sendStatus(404);
     } else {
-      LottUtils.updateField(lottery, option, value);
+      LottUtils.updateField(lottery, option, data);
       response.sendStatus(200);
     }
   }
