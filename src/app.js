@@ -11,71 +11,58 @@ const basic_auth = basicAuth({
   authorizer: AuthUtils.authorizer,
   authorizeAsync: true,
 });
-// const { Sequelize } = require("sequelize");
-// const sequelize = new Sequelize("sqlite:sqlite3.db:");
-// require('./models.js')
 
 app.use(express.urlencoded()); // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.json()); // Parse JSON bodies (as sent by API clients)
 
-app.get("/", (req, response) => {
-  response.send("404 Not Found?");
+app.get("/user/:address", async (request, response) => {
+  const address = request.params.address;
+  response.send(address);
 });
 
-app.post("/", (req, response) => {
-  response.send("You got to the right place, " + req.body.name);
+app.post("/user/:address", async (req, response) => {
+  const address = request.params.address;
+  response.send(address);
 });
 
-app.use("/users", basic_auth);
-app.get("/users", async (req, response) => {
-  const users = await UserUtils.queryAllUsers();
-  response.send("Users: " + JSON.stringify(users));
+app.get("/lotteries", async (request, response) => {
+  const lotteries = [];
+  response.send(lotteries);
 });
 
-app.use("/user", basic_auth);
-app.get("/user/:username", async (req, response) => {
-  const username = req.params.username;
-  response.send(await UserUtils.queryUserByUsername(username));
+app.get("/lottery/:lid", async (request, response) => {
+  const lid = request.params.lid;
+  response.send(lid);
 });
 
-app.post("/user", async (req, response) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  if (isEmpty(username) || isEmpty(password)) {
-    response
-      .status(400)
-      .send(`username: '${username}' or password: '${password}' is empty.`);
-  } else if (req.body.action === "update_password") {
-    const userID = await UserUtils.createUserOrUpdatePassword(
-      username,
-      password
-    );
-    response.send((userID ? userID : 0).toString());
-    return;
-  } else {
-    const userID = await UserUtils.createUserIfNotExists(username, password);
-    response.send((userID ? userID : 0).toString());
-    return;
-  }
-  response.status(500).send();
+app.post("/lottery", async (request, response) => {
+  response.send("create lottery");
 });
 
-app.post("/auth", async (req, response) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  if (isEmpty(username) || isEmpty(password)) {
-    response
-      .status(400)
-      .send(`username: '${username}' or password: '${password}' is empty.`);
-  }
-  AuthUtils.authorizer(username, password, (_, res) => {
-    if (res) {
-      response.send();
-    } else {
-      response.status(401).send();
-    }
-  });
+app.get("/lottery/:lid/:option(prizes|missions)", async (request, response) => {
+  const lid = request.params.lid;
+  const option = request.params.option;
+  response.send(option);
 });
+
+app.post("/lottery/:lid/:option(prizes|missions)", async (request, response) => {
+  const lid = request.params.lid;
+  const option = request.params.option;
+  response.send(option);
+});
+
+app.get("/lottery/:lid/close", async (request, response) => {
+  const lid = request.params.lid;
+  response.send(lid);
+});
+
+app.get("/lottery/:lid/redeem/:address", async (request, response) => {
+  const lid = request.params.lid;
+  const address = request.params.address;
+  response.send(lid);
+});
+
+
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
