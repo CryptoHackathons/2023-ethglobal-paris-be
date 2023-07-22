@@ -1,8 +1,7 @@
 {
   "development": {
     "dialect": "postgres",
-    "url": "postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a.frankfurt-postgres.render.com/ethp?ssl=true",
-    "database": "ethp"
+    "url": "postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a.frankfurt-postgres.render.com/ethp?ssl=true"
   },
   "test": {
     "storage": "./test.sqlite3",
@@ -10,7 +9,6 @@
   },
   "production": {
     "dialect": "postgres",
-    "url": "postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a/ethp?ssl=true",
-    "database": "ethp"
+    "url": "postgres://amgtier:gzPNIBDkjkeJeuAs3Ant3gMW6FG9fASG@dpg-cip8jh6nqql4qa6jpaeg-a/ethp"
   }
 }
