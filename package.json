@@ -4,14 +4,16 @@
   "description": "Backend that does the draw.",
   "main": "app.js",
   "scripts": {
+    "start": "node src/server.js",
+    "build": "node models/models.js",
     "test": "cross-env NODE_ENV=test jest --testTimeout=100000",
     "flow": "flow",
     "flow:check": "flow check ./src/",
-    "start": "npm run migrate && node src/server.js",
+    "configstart": "npm run migrate && node src/server.js",
     "dev": "nodemon src/server.js",
     "pretest": "cross-env NODE_ENV=test npm run migrate:reset",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
-    "migrate": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    "migrate": "npx sequelize-cli db:migrate --env production && npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",
