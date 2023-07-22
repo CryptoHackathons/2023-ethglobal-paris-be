@@ -104,13 +104,20 @@ curl http://localhost:8080/lottery/1/prizes -d "data={[%22id%22%3A%22%22%2C%22ti
 curl https://ethp.onrender.com/lottery/1/prizes -d "data={[%22id%22%3A%22%22%2C%22title%3A%22gold%22%2C%22description%22%3A%22something+good%22]}"
 ```
 
-- [WIP] `/lottery/:lottery_id/close`
-  - GET: trigger `closeLotterytAndCallChainlinkCoordinator()`
-    - 200: OK
-
-- [WIP] `/lottery/:lottery_id/redeem/:address`
+- `/lottery/:lottery_id/redeem/:address`
   - GET: get user id and proof for lottery
     - 200: {lotter_id, user_id, user_address, proof}
+    - 204: Empty proof
+    - 404: Lottery id or Address not found
+```
+curl http://localhost:8080/lottery/1/redeem/0x71C7656EC7ab88b098defB751B7401B5f6d8976F
+```
+```
+curl https://ethp.onrender.com/lottery/1/redeem/0x71C7656EC7ab88b098defB751B7401B5f6d8976F
+```
+
+- ~~`/lottery/:lottery_id/close`~~
+  - `close` function will be automatically executed at lottery end time.
 
 ## Data models
 ### User
