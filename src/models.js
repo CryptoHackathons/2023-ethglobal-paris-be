@@ -26,8 +26,4 @@ const Lottery = sequelize.define("Lottery", {
   missions: DataTypes.STRING,
 });
 
-(async () => {
-  await sequelize.sync();
-})();
-
 module.exports = { User, Lottery };

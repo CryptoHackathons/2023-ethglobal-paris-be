@@ -1,4 +1,4 @@
-const { User } = require("./models");
+const { User } = require("../models/models");
 
 async function queryUserByAddress(address) {
   const ret = await User.findAll({
