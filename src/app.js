@@ -5,7 +5,6 @@ const LottUtils = require("./lottery.js");
 const { isEmpty, makeSend } = require("./utils.js");
 
 const app = express();
-const port = 8080;
 
 const WALLET_LENGTH = 42;
 
@@ -99,6 +98,4 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
   response.send(makeSend(lid));
 });
 
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
-});
+module.exports = app;
