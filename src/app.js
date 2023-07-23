@@ -153,7 +153,9 @@ app.get("/lottery/:lid/redeem/:address", async (request, response) => {
     response.sendStatus(204);
     return;
   }
-  const proof = fs.readFileSync(PROOF_PATH);
+  const bufferProof = fs.readFileSync(PROOF_PATH);
+  const proof = bufferProof.toString('utf-8');
+
   if (isEmpty(proof)) {
     response.sendStatus(204);
     return;
