@@ -34,7 +34,7 @@ const Lottery = sequelize.define("Lottery", {
 
 if (require.main === module) {
   (async () => {
-    await sequelize.sync();
+    await sequelize.sync({alter: true});
   })();
 }
 
